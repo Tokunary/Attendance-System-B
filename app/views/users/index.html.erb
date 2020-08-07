@@ -10,10 +10,12 @@
       </tr>
     </thead>
     
-    <% @users.each do |user| %>
-    <tr>
-      <td><%= link_to user.name, user %></td>
-    </tr>
+    <% if current_user.admin? && !current_user?(@user) %>
+      <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.name, user %></td>
+      </tr>
+      <% end %>
     <% end %>
   </table>
   <%= will_paginate %>

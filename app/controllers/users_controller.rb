@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update]
   before_action :logged_in_user, only: [:index, :show, :edit, :update]
   before_action :correct_user, only:[:edit, :update]
+  before_action :admin_user, only: :index  
   
   def index
     @users = User.paginate(page: params[:page])
@@ -62,5 +63,10 @@ class UsersController < ApplicationController
     # アクセスしたユーザーが現在ログインしているユーザーか確認
     def correct_user
       redirect_to(root_url) unless current_user?(@user)
+    end
+    
+    # システム管理者権限所有か判定
+    def admin_user
+      redirect_to root_url unless current_user.admin?
     end
 end
